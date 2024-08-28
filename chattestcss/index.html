@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Etic Academy</title>
+    <!-- Lien pour FontAwesome pour l'icône -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .icon-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .chat-popup {
+            display: none;
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            width: 300px;
+            background-color: #f1f1f1;
+            border: 1px solid #888;
+            border-radius: 10px;
+            z-index: 9;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-body {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: white;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 70px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 10px;
+        }
+
+        button#sendBtn {
+            padding: 10px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="#" class="icon-container" id="chatbotButton"><i class="fas fa-comment"></i></a>
+
+    <div id="chatPopup" class="chat-popup">
+        <div class="chat-header">
+            <h4>Chatbot Etic Academy</h4>
+            <button id="closeChat" class="close-btn">&times;</button>
+        </div>
+        <div id="chatBody" class="chat-body">
+            <!-- Messages du chatbot apparaîtront ici -->
+        </div>
+        <input type="text" id="userInput" placeholder="Posez votre question...">
+        <button id="sendBtn">Envoyer</button>
+    </div>
+
+    <script>
+        // Afficher le popup de chat
+        document.getElementById("chatbotButton").onclick = function() {
+            document.getElementById("chatPopup").style.display = "block";
+        };
+
+        // Fermer le popup de chat
+        document.getElementById("closeChat").onclick = function() {
+            document.getElementById("chatPopup").style.display = "none";
+        };
+
+        // Chatbot - Questions et Réponses
+        const chatbotResponses = {
+            "formation": "Nous offrons des formations en développement web, design graphique, et marketing digital.",
+            "tarif": "Les tarifs varient selon les formations. Pour plus d'informations, contactez-nous directement.",
+            "durée": "La durée des formations dépend du programme choisi, généralement entre 3 à 6 mois.",
+            "professeur": "Nos professeurs sont des experts dans leur domaine avec plusieurs années d'expérience."
+        };
+
+        document.getElementById("sendBtn").onclick = function() {
+            const userInput = document.getElementById("userInput").value.toLowerCase();
+            let response = "Désolé, je n'ai pas compris votre question. Pouvez-vous reformuler ?";
+
+            for (let question in chatbotResponses) {
+                if (userInput.includes(question)) {
+                    response = chatbotResponses[question];
+                    break;
+                }
+            }
+
+            // Ajouter la question de l'utilisateur
+            addMessage("Vous: " + document.getElementById("userInput").value);
+            
+            // Ajouter la réponse du chatbot
+            addMessage("Chatbot: " + response);
+            
+            // Effacer le champ d'entrée
+            document.getElementById("userInput").value = "";
+        };
+
+        // Fonction pour ajouter un message dans le chat
+        function addMessage(message) {
+            const chatBody = document.getElementById("chatBody");
+            const newMessage = document.createElement("div");
+            newMessage.textContent = message;
+            chatBody.appendChild(newMessage);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+    </script>
+
+</body>
+</html>
